@@ -1,0 +1,125 @@
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+.App {
+  margin: 15px;
+}
+
+.china__header {
+  border: solid 1px #bfbfc0;
+  padding: 0 20px;
+  .china__title {
+    font-size: 22px;
+  }
+}
+
+
+.main-content { 
+  .column-1,
+  .column-2 {
+    border: solid 1px #bfbfc0;
+    border-top: none;
+  }
+  .column-1 {
+    .search {
+      padding: 20px;
+      border-bottom: solid 1px #bfbfc0;
+      .search__input {
+        border: none;
+        border-bottom: solid 1px black;
+        width: 100%;
+        max-width: 700px;
+        // background-image: url('../images/search-image.png');
+        background-size: 15px;
+        background-position: left;
+        background-repeat: no-repeat;
+        padding-left: 20px;
+        box-sizing: border-box;
+      }
+    }
+    .number-elements {
+      border-bottom: solid 1px #bfbfc0;
+      padding: 20px;
+      font-weight: bold;
+      font-size: 13px;
+      .column-1__counter {}
+    }
+    .cities {      
+      .cities__list {
+        margin: 0;
+        padding: 0;
+        .cities__list--item {
+          display: flex;
+          padding: 20px;
+          align-items: center;
+          &:hover {
+            background-color: #F2F2F2;
+          }
+          .item__checkbox {}
+          .item__image {
+            width: 50px;
+            margin: 0 20px;
+          }
+          .item__info {
+            .item__name {
+              display: block;
+              margin-bottom: 10px;
+            }
+            .item__chinese-name {
+              display: block;
+            }
+          }
+        }
+      }
+    }
+  }
+  .column-2 {
+    .top-content {
+      .column-2__counter {}
+      .column-2__clear {}
+    }
+    .selected-cities {
+      .selected-cities__list {
+        .cities__list--item {
+          display: flex;
+          padding: 20px;
+          align-items: center;
+          &:hover {
+            background-color: #F2F2F2;
+          }
+          .item__image {
+            width: 50px;
+            margin: 0 20px;
+          }
+          .item__info {
+            .item__name {
+              display: block;
+              margin-bottom: 10px;
+            }
+            .item__chinese-name {
+              display: block;
+            }
+          }
+          .item__close {}
+        }
+      }
+    }
+  }
+  .selected {
+    background-color: #F2F2F2;
+  }
+}
+
+
+
+@media all and (min-width: 768px) {
+  .main-content {
+    display: flex;
+    .column-1,
+    .column-2 {
+      width: 50%;
+    }
+  }
+}
