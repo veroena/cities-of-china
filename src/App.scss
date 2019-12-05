@@ -26,24 +26,28 @@ body {
     .search {
       padding: 20px;
       border-bottom: solid 1px #bfbfc0;
+      .fas.fa-search {
+        color: darkgrey;
+        position: absolute;
+      }
       .search__input {
         border: none;
         border-bottom: solid 1px black;
         width: 100%;
         max-width: 700px;
-        // background-image: url('../images/search-image.png');
-        background-size: 15px;
-        background-position: left;
-        background-repeat: no-repeat;
-        padding-left: 20px;
+        padding: 0 0 5px 25px;
         box-sizing: border-box;
+        font-size: 14px;
+        &:focus {
+          outline: none;
+        }
       }
     }
     .number-elements {
       border-bottom: solid 1px #bfbfc0;
       padding: 20px;
       font-weight: bold;
-      font-size: 13px;
+      font-size: 15px;
       .column-1__counter {}
     }
     .cities {      
@@ -77,11 +81,20 @@ body {
   }
   .column-2 {
     .top-content {
+      display: flex;
+      justify-content: space-between;
+      padding: 20px;
       .column-2__counter {}
-      .column-2__clear {}
+      .column-2__clear {
+        font-weight: bold;
+        color: #4b9fdd;
+        cursor: pointer;
+      }
     }
     .selected-cities {
       .selected-cities__list {
+        margin: 0;
+        padding: 0;
         .cities__list--item {
           display: flex;
           padding: 20px;
@@ -91,9 +104,10 @@ body {
           }
           .item__image {
             width: 50px;
-            margin: 0 20px;
+            margin: 0 20px 0 0;
           }
           .item__info {
+            flex-grow: 1;
             .item__name {
               display: block;
               margin-bottom: 10px;
@@ -107,7 +121,7 @@ body {
       }
     }
   }
-  .selected {
+  .true {
     background-color: #F2F2F2;
   }
 }

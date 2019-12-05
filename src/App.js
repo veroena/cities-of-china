@@ -10,22 +10,22 @@ class App extends React.Component {
     this.state = {
       citiesList: cities.cities,
       filterCity: '',
+      filteredCities: [],
       selectedCities: []
     }
     this.searchCity = this.searchCity.bind(this);
-    this.resetFilter = this.resetFilter.bind(this);
     this.selectCities = this.selectCities.bind(this);
     this.clearSelected = this.clearSelected.bind(this);
     this.deleteSelected = this.deleteSelected.bind(this);
+    // this.isSelected = this.isSelected.bind(this);
   }
 
   searchCity(event) {
-    const inputCity = event.currentTarget.value;
-    this.setState({filterCity : inputCity});
-  }
-
-  resetFilter() {
-    this.setState({filterCity : ''})
+    let inputCity = event.currentTarget.value;
+    let cities = this.state.citiesList.filter(item => item.id.includes(inputCity.toLowerCase()))
+    // this.setState({filterCity : inputCity});
+    // const filteredCities = this.state.citiesList.filter(item => item.id.includes(this.state.filterCity.toLowerCase()))
+    this.setState({filterCity: inputCity, filteredCities: cities});
   }
 
   selectCities (event) {
@@ -54,8 +54,17 @@ class App extends React.Component {
     this.setState({selectedCities: []});
   }
 
+  isSelected(city) {
+    if(this.state.selectedCities.length !== 0) {
+      const selected = this.state.selectedCities.filter(item => item.id === city.id);
+      if(selected.length !== 0) {
+        return 'true';
+      } 
+    } 
+  }
+
   render () {
-    const { citiesList, filterCity, selectedCities } = this.state;
+    const { citiesList, filterCity, selectedCities, filteredCities } = this.state;
     return (
       <div className="App">
         <header className="china__header">
@@ -65,23 +74,39 @@ class App extends React.Component {
           <div className="column-1">
             <div className="search">
               <label htmlFor="cities" className="search__label"></label>
-              <input type="text" name="cities" className="search__input" placeholder="Search by name" value={filterCity} onChange={this.searchCity} onFocus={this.resetFilter} />
+              <i className="fas fa-search"></i>
+              <input type="text" name="cities" className="search__input" placeholder="Search by name" onChange={this.searchCity} />
             </div>
-            <input type="checkbox" className="column-1__counter"/>{citiesList.length} items
+            <div className="number-elements">
+              <input type="checkbox" className="column-1__counter"/>{filteredCities.length === 0 && filterCity === '' ? citiesList.length : filteredCities.length} items
+            </div>
             <div className="cities">
               <ul className="cities__list">
-                {citiesList
-                  .filter(item => item.id.includes(filterCity.toLowerCase()))
+                {filteredCities.length === 0 && filterCity === '' ?
+                  citiesList
+                    .map(item => 
+                      <li className={`cities__list--item ${this.isSelected(item)}`} key={item.id} id={item.id} onClick={this.selectCities}>
+                        <input type="checkbox" className="item__checkbox" checked={this.isSelected(item)} />
+                        <img className="item__image" alt="city" src="images/city1.png"/>
+                        <div className="item__info">
+                          <div className="item__name">{item.name}</div>
+                          <div className="item__chinese-name">{item.chineseName}</div>
+                        </div>
+                      </li>
+                  )
+                :
+                filteredCities
                   .map(item => 
-                    <li className="cities__list--item" key={item.id} id={item.id} onClick={this.selectCities}>
-                      <input type="checkbox" className="item__checkbox"/>
-                      <img className="item__image" alt="city"/>
+                    <li className={`cities__list--item ${this.isSelected(item)}`} key={item.id} id={item.id} onClick={this.selectCities}>
+                      <input type="checkbox" className="item__checkbox" checked={this.isSelected(item)} />
+                      <img className="item__image" alt="city" src="images/city1.png"/>
                       <div className="item__info">
                         <div className="item__name">{item.name}</div>
                         <div className="item__chinese-name">{item.chineseName}</div>
                       </div>
                     </li>
-                )}
+                  )
+                }
               </ul>
             </div>
           </div>
@@ -95,7 +120,7 @@ class App extends React.Component {
                 {selectedCities.length !== 0 ? 
                   selectedCities.map(item =>
                     <li className="cities__list--item" key={item.id} id={item.id} onClick={this.selectCities}>
-                      <img className="item__image" alt="city"/>
+                      <img className="item__image" alt="city" src="images/city1.png" />
                       <div className="item__info">
                         <div className="item__name">{item.name}</div>
                         <div className="item__chinese-name">{item.chineseName}</div>
