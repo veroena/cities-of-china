@@ -11,21 +11,19 @@ class App extends React.Component {
       citiesList: cities.cities,
       filterCity: '',
       filteredCities: [],
-      selectedCities: []
+      selectedCities: [],
+      isChecked: false
     }
     this.searchCity = this.searchCity.bind(this);
     this.selectCities = this.selectCities.bind(this);
     this.clearSelected = this.clearSelected.bind(this);
     this.deleteSelected = this.deleteSelected.bind(this);
-    // this.isSelected = this.isSelected.bind(this);
     this.selectAll = this.selectAll.bind(this);
   }
 
   searchCity(event) {
     let inputCity = event.currentTarget.value;
     let cities = this.state.citiesList.filter(item => item.id.includes(inputCity.toLowerCase()))
-    // this.setState({filterCity : inputCity});
-    // const filteredCities = this.state.citiesList.filter(item => item.id.includes(this.state.filterCity.toLowerCase()))
     this.setState({filterCity: inputCity, filteredCities: cities});
   }
 
@@ -59,16 +57,25 @@ class App extends React.Component {
     if(this.state.selectedCities.length !== 0) {
       const selected = this.state.selectedCities.filter(item => item.id === city.id);
       if(selected.length !== 0) {
-        return 'true';
-      } 
-    } 
+        return 'checked';
+      }
+    }
   }
 
   selectAll() {
-    if (this.state.filteredCities.length === 0) {
-      this.setState({selectedCities : this.state.citiesList});
+    if (this.state.isChecked === true) {
+      if (this.state.filteredCities.length === 0) {
+        this.setState({selectedCities : [], isChecked: !this.state.isChecked});
+      } else {
+        const newArr = this.state.selectedCities.filter(city => this.state.filteredCities.some(item => city.id !== item.id));
+        this.setState({selectedCities: newArr, isChecked: !this.state.isChecked})
+      }
     } else {
-      this.setState({selectedCities: this.state.filteredCities});
+      if (this.state.filteredCities.length === 0) {
+        this.setState({selectedCities : this.state.citiesList, isChecked: !this.state.isChecked});
+      } else {
+        this.setState({selectedCities: this.state.filteredCities, isChecked: !this.state.isChecked});
+      }
     }
   }
 
@@ -93,9 +100,9 @@ class App extends React.Component {
               <ul className="cities__list">
                 {filteredCities.length === 0 && filterCity === '' ?
                   citiesList
-                    .map(item => 
+                    .map(item =>
                       <li className={`cities__list--item ${this.isSelected(item)}`} key={item.id} id={item.id} onClick={this.selectCities}>
-                        <input type="checkbox" className="item__checkbox" checked={this.isSelected(item)} />
+                        <input type="checkbox" value={item.id} className="item__checkbox" checked={this.isSelected(item)} />
                         <img className="item__image" alt="city" src="images/city1.png"/>
                         <div className="item__info">
                           <div className="item__name">{item.name}</div>
@@ -105,9 +112,9 @@ class App extends React.Component {
                   )
                 :
                 filteredCities
-                  .map(item => 
+                  .map(item =>
                     <li className={`cities__list--item ${this.isSelected(item)}`} key={item.id} id={item.id} onClick={this.selectCities}>
-                      <input type="checkbox" className="item__checkbox" checked={this.isSelected(item)} />
+                      <input type="checkbox" value={item.id} className="item__checkbox" checked={this.isSelected(item)} />
                       <img className="item__image" alt="city" src="images/city1.png"/>
                       <div className="item__info">
                         <div className="item__name">{item.name}</div>
@@ -126,7 +133,7 @@ class App extends React.Component {
             </div>
             <div className="selected-cities">
               <ul className="selected-cities__list">
-                {selectedCities.length !== 0 ? 
+                {selectedCities.length !== 0 ?
                   selectedCities.map(item =>
                     <li className="cities__list--item" key={item.id} id={item.id} onClick={this.selectCities}>
                       <img className="item__image" alt="city" src="images/city1.png" />
