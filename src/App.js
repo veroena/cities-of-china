@@ -18,6 +18,7 @@ class App extends React.Component {
     this.clearSelected = this.clearSelected.bind(this);
     this.deleteSelected = this.deleteSelected.bind(this);
     // this.isSelected = this.isSelected.bind(this);
+    this.selectAll = this.selectAll.bind(this);
   }
 
   searchCity(event) {
@@ -63,6 +64,14 @@ class App extends React.Component {
     } 
   }
 
+  selectAll() {
+    if (this.state.filteredCities.length === 0) {
+      this.setState({selectedCities : this.state.citiesList});
+    } else {
+      this.setState({selectedCities: this.state.filteredCities});
+    }
+  }
+
   render () {
     const { citiesList, filterCity, selectedCities, filteredCities } = this.state;
     return (
@@ -78,7 +87,7 @@ class App extends React.Component {
               <input type="text" name="cities" className="search__input" placeholder="Search by name" onChange={this.searchCity} />
             </div>
             <div className="number-elements">
-              <input type="checkbox" className="column-1__counter"/>{filteredCities.length === 0 && filterCity === '' ? citiesList.length : filteredCities.length} items
+              <input type="checkbox" className="column-1__counter" onClick={this.selectAll} />{filteredCities.length === 0 && filterCity === '' ? citiesList.length : filteredCities.length} items
             </div>
             <div className="cities">
               <ul className="cities__list">
